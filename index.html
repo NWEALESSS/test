@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Открыть PUBG Mobile</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    background: radial-gradient(circle at 50% 0%, #2a2f3a 0%, #14161b 60%, #0a0b0e 100%);
+    color: #fff;
+    padding: 20px;
+    overflow: hidden;
+  }
+
+  /* Лёгкое «свечение» на фоне */
+  body::before {
+    content: "";
+    position: fixed;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(243,165,25,0.15) 0%, transparent 70%);
+    top: -200px; left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .card {
+    position: relative;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    padding: 48px 32px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 6px 14px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #f3a519;
+    border: 1px solid rgba(243,165,25,0.4);
+    border-radius: 999px;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-size: 28px;
+    line-height: 1.25;
+    margin-bottom: 12px;
+    font-weight: 800;
+  }
+
+  h1 span { color: #f3a519; }
+
+  p {
+    font-size: 15px;
+    color: #9aa0ab;
+    line-height: 1.5;
+    margin-bottom: 32px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px 24px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #14161b;
+    background: linear-gradient(135deg, #ffd15c, #f3a519);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform .15s ease, box-shadow .2s ease;
+    box-shadow: 0 8px 24px rgba(243,165,25,0.35);
+  }
+
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(243,165,25,0.5); }
+  .btn:active { transform: translateY(0); }
+
+  .btn svg { width: 20px; height: 20px; }
+
+  .hint {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.5;
+  }
+
+  .status {
+    margin-top: 16px;
+    font-size: 13px;
+    min-height: 18px;
+    color: #f3a519;
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .status.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="badge">PUBG Mobile</div>
+    <h1>Готовы к <span>бою?</span></h1>
+    <p>Нажмите кнопку ниже — приложение запустится прямо на вашем устройстве.</p>
+
+    <a href="#" id="openBtn" class="btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="6 3 20 12 6 21 6 3"></polygon>
+      </svg>
+      Открыть PUBG Mobile
+    </a>
+
+    <p class="hint">Если приложение не открылось, проверьте, установлено ли оно на устройстве.</p>
+    <div class="status" id="status"></div>
+  </div>
+
+<script>
+  const btn = document.getElementById('openBtn');
+  const status = document.getElementById('status');
+
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const scheme = 'igame1320://';
+
+    // Пытаемся открыть приложение
+    window.location.href = scheme;
+
+    // Если через 1.5 секунды страница всё ещё видима — вероятно, приложение не открылось
+    const start = Date.now();
+    setTimeout(() => {
+      if (Date.now() - start < 2000 && !document.hidden) {
+        status.textContent = 'Похоже, приложение не установлено или Safari заблокировал переход.';
+        status.classList.add('show');
+      }
+    }, 1500);
+  });
+</script>
+
+</body>
+</html>
